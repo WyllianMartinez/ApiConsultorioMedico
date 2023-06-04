@@ -1,5 +1,5 @@
 package br.com.unipar.apiconsultoriomedico;
 
-public enum EnumEspicialidade {
+public enum EnumEspecialidade {
 
 }
