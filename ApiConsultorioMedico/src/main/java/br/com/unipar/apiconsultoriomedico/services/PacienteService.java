@@ -40,7 +40,7 @@ public class PacienteService {
 	
 	public List<Paciente> findByFilters(String nome){
 		
-		return pacienteRepository.findByNomeContainingAllIgnoCase(nome);
+		return pacienteRepository.findByNomeContainingIgnoreCase(nome);
 		
 	}
 	

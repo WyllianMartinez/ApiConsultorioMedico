@@ -36,7 +36,7 @@ public class MedicoService {
 
 	public List<Medico> findByFilters(String nome) {
 
-		return medicoRepository.findByNomeContainingAllIgnoCase(nome);
+		return medicoRepository.findByNomeContainingIgnoreCase(nome);
 	}
 
 	public Medico findById(Long id) throws Exception{
