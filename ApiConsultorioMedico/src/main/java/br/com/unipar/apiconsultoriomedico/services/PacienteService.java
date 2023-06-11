@@ -54,5 +54,11 @@ public class PacienteService {
 			throw new Exception("Paciente com ID"+id+"Não identificado");
 		
 	}
+	
+	public void delete(Long id) throws Exception{
+		Paciente paciente = findById(id);
+		paciente.setStatus(false);
+		pacienteRepository.saveAndFlush(paciente);
+	}
 }
 

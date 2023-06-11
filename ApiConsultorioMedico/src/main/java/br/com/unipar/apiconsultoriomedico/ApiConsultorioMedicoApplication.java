@@ -25,7 +25,7 @@ public class ApiConsultorioMedicoApplication {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(geraInfoSwsagger())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("br.com.unipar.TrabalhoWebSpring"))
+				.apis(RequestHandlerSelectors.basePackage("br.com.unipar.apiconsultoriomedico"))
 				.paths(PathSelectors.any())
 				.build();
 	}

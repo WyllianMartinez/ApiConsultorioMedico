@@ -9,8 +9,8 @@ import br.com.unipar.apiconsultoriomedico.model.Medico;
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
 	
-	public List<Medico> findByNomeContainingIgnoreCase(String nome);
-
+	public List<Medico> findByNomeOrderByNomeAsc(String nome);
+	
 	
 
 }

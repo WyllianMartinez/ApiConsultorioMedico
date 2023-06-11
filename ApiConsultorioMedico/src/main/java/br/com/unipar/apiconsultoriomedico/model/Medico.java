@@ -14,10 +14,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import br.com.unipar.apiconsultoriomedico.EnumEspecialidade;
 
 @Entity
 @Table(name = "medico")
+@DynamicUpdate
 public class Medico {
 
 	@Id
@@ -54,6 +57,17 @@ public class Medico {
 	@Column(updatable = false)
 	@Enumerated(EnumType.STRING)
 	private EnumEspecialidade enumespecialidade;
+	
+	
+	private Boolean status;
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 
 	public Long getId() {
 		return id;

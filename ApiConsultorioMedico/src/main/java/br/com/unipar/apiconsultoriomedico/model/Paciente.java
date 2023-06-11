@@ -1,7 +1,7 @@
 package br.com.unipar.apiconsultoriomedico.model;
 
 import javax.validation.constraints.Size;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +30,7 @@ public class Paciente {
 	@NotNull
 	@NotEmpty
 	@NotBlank
+	@Column(updatable = false)
 	private String email;
 	
 	@NotNull
@@ -40,11 +41,23 @@ public class Paciente {
 	@NotNull
 	@NotEmpty
 	@NotBlank
+	@Column(updatable = false)
+	@Size(min = 1, max = 11)
 	private int cpf;
 	
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+	
+	private Boolean status;
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 
 	public Long getId() {
 		return id;

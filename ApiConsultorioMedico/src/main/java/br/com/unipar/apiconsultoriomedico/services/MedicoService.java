@@ -36,7 +36,7 @@ public class MedicoService {
 
 	public List<Medico> findByFilters(String nome) {
 
-		return medicoRepository.findByNomeContainingIgnoreCase(nome);
+		return medicoRepository.findByNomeOrderByNomeAsc(nome);
 	}
 
 	public Medico findById(Long id) throws Exception{
@@ -49,5 +49,12 @@ public class MedicoService {
 			throw new Exception("Médico com Id"+id+" Não Identificado");
 		}
 	}
+	
+	public void delete(Long id) throws Exception{
+		Medico medico = findById(id);
+		medico.setStatus(false);
+		medicoRepository.saveAndFlush(medico);
+	}
+	
 }
 
