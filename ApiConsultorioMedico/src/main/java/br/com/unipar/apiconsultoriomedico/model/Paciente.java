@@ -42,8 +42,7 @@ public class Paciente {
 	@NotEmpty
 	@NotBlank
 	@Column(updatable = false)
-	@Size(min = 1, max = 11)
-	private int cpf;
+	private String cpf;
 	
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
@@ -91,11 +90,11 @@ public class Paciente {
 		this.telefone = telefone;
 	}
 
-	public int getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(int cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
