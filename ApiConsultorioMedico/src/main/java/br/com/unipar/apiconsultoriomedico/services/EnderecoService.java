@@ -2,10 +2,8 @@ package br.com.unipar.apiconsultoriomedico.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import br.com.unipar.apiconsultoriomedico.model.Endereco;
 import br.com.unipar.apiconsultoriomedico.repositories.EnderecoRepository;
 

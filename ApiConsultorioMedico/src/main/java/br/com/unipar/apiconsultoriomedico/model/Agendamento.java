@@ -2,6 +2,7 @@ package br.com.unipar.apiconsultoriomedico.model;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +32,17 @@ public class Agendamento {
 	@NotNull
 	@NotEmpty
 	@NotBlank
+	@ManyToOne
+	@JoinColumn(name = "Medico_id")
+	private Medico medico;
+	
+	@NotNull
+	@NotEmpty
+	@NotBlank
 	private Date datahora;
+	
+	@Column(name = "cancelada")
+	private boolean cancelada;
 
 	public Long getId() {
 		return id;
@@ -49,12 +60,29 @@ public class Agendamento {
 		this.paciente = paciente;
 	}
 
+	public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
+	}
+
 	public Date getDatahora() {
 		return datahora;
 	}
 
 	public void setDatahora(Date datahora) {
 		this.datahora = datahora;
-	}	
+	}
 	
+	public boolean isCancelada() {
+		return cancelada;
+	}
+
+	public void setCancelada(boolean cancelada) {
+		this.cancelada = cancelada;
+	}
+
+	// Outros métodos, se necessário
 }

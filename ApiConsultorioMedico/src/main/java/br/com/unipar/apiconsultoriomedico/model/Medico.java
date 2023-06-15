@@ -44,8 +44,6 @@ public class Medico {
 	private String telefone;
 	
 	@NotNull
-	@NotEmpty
-	@NotBlank
 	@Column(updatable = false)
 	private int crm;
 	
