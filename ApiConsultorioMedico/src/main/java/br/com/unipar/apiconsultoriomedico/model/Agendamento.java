@@ -1,6 +1,5 @@
 package br.com.unipar.apiconsultoriomedico.model;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;

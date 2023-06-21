@@ -29,7 +29,7 @@ import br.com.unipar.apiconsultoriomedico.resquest.CancelamentoRequest;
 
 @RestController
 @RequestMapping("/consultas")
-public class ConsultaController {
+public class AgendamentoController {
 
     private List<Agendamento> agendamentos = new ArrayList<>();
     private List<Cancelamento> cancelamento = new ArrayList<>();
