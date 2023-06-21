@@ -2,8 +2,11 @@ package br.com.unipar.apiconsultoriomedico.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 import br.com.unipar.apiconsultoriomedico.model.Agendamento;
+import br.com.unipar.apiconsultoriomedico.model.Endereco;
 import br.com.unipar.apiconsultoriomedico.repositories.AgendamentoRepository;
 
 @Service
@@ -28,5 +31,12 @@ public class AgendamentoService {
 		else
 			throw new Exception("Agendamento com Id"+id+"Não Identificado");
 	}
-
+	
+	public List<Agendamento> findAll(){
+		
+		return agendamentoRepository.findAll();
+		
+	}
+	
+	
 }

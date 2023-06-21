@@ -9,7 +9,7 @@ import br.com.unipar.apiconsultoriomedico.model.Paciente;
 public class AgendamentoRequest {
     private Paciente paciente;
     private Medico medico;
-    private LocalDate data;
+    private CharSequence data;
     private LocalTime horario;
 	
     
@@ -26,17 +26,19 @@ public class AgendamentoRequest {
 	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}
-	public LocalDate getData() {
+	
+	public CharSequence getData() {
 		return data;
 	}
-	public void setData(LocalDate data) {
+	public void setData(CharSequence data) {
 		this.data = data;
 	}
-	public LocalTime getHorario() {
-		return horario;
+	 public LocalTime getHorario() {
+	        return horario;
 	}
+
 	public void setHorario(LocalTime horario) {
-		this.horario = horario;
+	        this.horario = horario;
 	}
 
     

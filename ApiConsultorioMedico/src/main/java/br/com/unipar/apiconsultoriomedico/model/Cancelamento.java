@@ -32,7 +32,6 @@ public class Cancelamento {
 	@JoinColumn(name = "id_agendamento")
 	private Agendamento agendamento;
 
-
 	public Long getId() {
 		return id;
 	}

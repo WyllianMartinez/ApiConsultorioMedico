@@ -50,11 +50,17 @@ public class MedicoService {
 		}
 	}
 	
-	public void delete(Long id) throws Exception{
-		Medico medico = findById(id);
-		medico.setStatus(false);
-		medicoRepository.saveAndFlush(medico);
+	public Medico delete(Long id) {
+	    Optional<Medico> optionalMedico = medicoRepository.findById(id);
+	    if (optionalMedico.isPresent()) {
+	        Medico medico = optionalMedico.get();
+	        medicoRepository.deleteById(id);
+	        return null;
+	    } else {
+	        throw new RuntimeException("Médico não encontrado");
+	    }
 	}
+
 	
 }
 

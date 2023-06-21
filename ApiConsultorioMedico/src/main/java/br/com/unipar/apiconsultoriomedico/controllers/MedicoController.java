@@ -3,6 +3,8 @@ package br.com.unipar.apiconsultoriomedico.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unipar.apiconsultoriomedico.model.Medico;
+import br.com.unipar.apiconsultoriomedico.repositories.AgendamentoRepository;
 import br.com.unipar.apiconsultoriomedico.services.MedicoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,6 +61,11 @@ public class MedicoController {
 		
 		return medicoService.findById(id);
 		
+	}
+	
+	@DeleteMapping("/{id}")
+	public Medico delete(@PathVariable Long id) {
+	    return medicoService.delete(id);
 	}
 	
 

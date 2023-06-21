@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,54 +25,48 @@ import br.com.unipar.apiconsultoriomedico.exceptions.ConsultaAgendamentoExceptio
 import br.com.unipar.apiconsultoriomedico.exceptions.ConsultaCancelamentoException;
 import br.com.unipar.apiconsultoriomedico.model.Agendamento;
 import br.com.unipar.apiconsultoriomedico.model.Cancelamento;
+import br.com.unipar.apiconsultoriomedico.model.Endereco;
 import br.com.unipar.apiconsultoriomedico.model.Medico;
 import br.com.unipar.apiconsultoriomedico.model.Paciente;
 import br.com.unipar.apiconsultoriomedico.resquest.AgendamentoRequest;
 import br.com.unipar.apiconsultoriomedico.resquest.CancelamentoRequest;
+import br.com.unipar.apiconsultoriomedico.services.AgendamentoService;
 
 @RestController
 @RequestMapping("/consultas")
 public class AgendamentoController {
+	
+	private AgendamentoService agendamentoService;
 
     private List<Agendamento> agendamentos = new ArrayList<>();
     private List<Cancelamento> cancelamento = new ArrayList<>();
 
     @PostMapping("/agendar")
-    public void agendarConsulta(@RequestBody AgendamentoRequest request) {
-        LocalDate data = request.getData();
+    public void insert(@RequestBody AgendamentoRequest request) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate data = LocalDate.parse(request.getData(), formatter);
         LocalTime horario = request.getHorario();
 
-        // Verifica se a data está dentro do horário de funcionamento da clínica
         if (!validarHorarioFuncionamento(data, horario)) {
             throw new ConsultaAgendamentoException("Horário de agendamento inválido");
         }
 
-        // Verifica se a consulta possui antecedência mínima de 30 minutos
-        if (!validarAntecedenciaMinima(data, horario)) {
-            throw new ConsultaAgendamentoException("Antecedência mínima não atendida");
-        }
-
-        // Verifica se o paciente está ativo no sistema
         if (!isPacienteAtivo(request.getPaciente())) {
             throw new ConsultaAgendamentoException("Paciente inativo");
         }
 
-        // Verifica se o médico está ativo no sistema
         if (!isMedicoAtivo(request.getMedico())) {
             throw new ConsultaAgendamentoException("Médico inativo");
         }
 
-        // Verifica se o paciente já possui uma consulta agendada no mesmo dia
         if (isConsultaDuplicada(request.getPaciente(), data)) {
             throw new ConsultaAgendamentoException("Já existe uma consulta agendada para o paciente neste dia");
         }
 
-        // Verifica se o médico já possui uma consulta agendada na mesma data/hora
         if (isMedicoOcupado(request.getMedico(), LocalDateTime.of(data, horario))) {
             throw new ConsultaAgendamentoException("Médico já possui uma consulta agendada neste horário");
         }
 
-        // Agendamento da consulta
         Agendamento agendamento = new Agendamento();
         agendamento.setMedico(request.getMedico());
         agendamento.setPaciente(request.getPaciente());
@@ -139,6 +136,17 @@ public class AgendamentoController {
             }
         }
         return false;
+    }
+
+    
+    @GetMapping
+    public List<Agendamento> findAll() throws Exception {
+        return agendamentoService.findAll();
+    }
+
+    @GetMapping(path = "/{id}")
+    public Agendamento findById(@PathVariable Long id) throws Exception {
+        return agendamentoService.findById(id);
     }
 
 }

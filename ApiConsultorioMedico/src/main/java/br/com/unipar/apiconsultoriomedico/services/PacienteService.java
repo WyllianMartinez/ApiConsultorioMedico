@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import br.com.unipar.apiconsultoriomedico.model.Medico;
 import br.com.unipar.apiconsultoriomedico.model.Paciente;
 import br.com.unipar.apiconsultoriomedico.repositories.PacienteRepository;
 
@@ -55,10 +55,15 @@ public class PacienteService {
 		
 	}
 	
-	public void delete(Long id) throws Exception{
-		Paciente paciente = findById(id);
-		paciente.setStatus(false);
-		pacienteRepository.saveAndFlush(paciente);
+	public Paciente delete(Long id) {
+	    Optional<Paciente> optionalPaciente = pacienteRepository.findById(id);
+	    if (optionalPaciente.isPresent()) {
+	        Paciente paciente = optionalPaciente.get();
+	        pacienteRepository.deleteById(id);
+	        return null;
+	    } else {
+	        throw new RuntimeException("Paciente não encontrado");
+	    }
 	}
 }
 
