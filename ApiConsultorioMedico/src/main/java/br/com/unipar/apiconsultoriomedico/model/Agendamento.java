@@ -1,6 +1,7 @@
 package br.com.unipar.apiconsultoriomedico.model;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,7 @@ public class Agendamento {
 	@NotNull
 	@NotEmpty
 	@NotBlank
-	private Date datahora;
+	private LocalDateTime datahora;
 	
 	@Column(name = "cancelada")
 	private boolean cancelada;
@@ -67,15 +68,16 @@ public class Agendamento {
 	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}
-
-	public Date getDatahora() {
+	
+	
+	public LocalDateTime getDatahora() {
 		return datahora;
 	}
 
-	public void setDatahora(Date datahora) {
+	public void setDatahora(LocalDateTime datahora) {
 		this.datahora = datahora;
 	}
-	
+
 	public boolean isCancelada() {
 		return cancelada;
 	}
@@ -83,6 +85,8 @@ public class Agendamento {
 	public void setCancelada(boolean cancelada) {
 		this.cancelada = cancelada;
 	}
+	
+	
 
-	// Outros métodos, se necessário
+
 }

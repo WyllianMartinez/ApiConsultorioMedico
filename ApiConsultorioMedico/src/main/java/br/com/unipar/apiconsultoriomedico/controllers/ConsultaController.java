@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,18 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.unipar.apiconsultoriomedico.enums.MotivoCancelamento;
 import br.com.unipar.apiconsultoriomedico.exceptions.ConsultaAgendamentoException;
 import br.com.unipar.apiconsultoriomedico.exceptions.ConsultaCancelamentoException;
 import br.com.unipar.apiconsultoriomedico.model.Agendamento;
+import br.com.unipar.apiconsultoriomedico.model.Cancelamento;
 import br.com.unipar.apiconsultoriomedico.model.Medico;
 import br.com.unipar.apiconsultoriomedico.model.Paciente;
 import br.com.unipar.apiconsultoriomedico.resquest.AgendamentoRequest;
+import br.com.unipar.apiconsultoriomedico.resquest.CancelamentoRequest;
 
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
 
     private List<Agendamento> agendamentos = new ArrayList<>();
+    private List<Cancelamento> cancelamento = new ArrayList<>();
 
     @PostMapping("/agendar")
     public void agendarConsulta(@RequestBody AgendamentoRequest request) {
@@ -65,22 +70,27 @@ public class ConsultaController {
         }
 
         // Agendamento da consulta
-        Agendamento agendamento = new Agendamento(request.getPaciente(), request.getMedico(), LocalDateTime.of(data, horario));
+        Agendamento agendamento = new Agendamento();
+        agendamento.setMedico(request.getMedico());
+        agendamento.setPaciente(request.getPaciente());
+        agendamento.setDatahora(LocalDateTime.of(data, horario));
         agendamentos.add(agendamento);
     }
 
     @PostMapping("/cancelar")
     public void cancelarConsulta(@RequestBody CancelamentoRequest request) {
         Agendamento agendamento = request.getAgendamento();
-
-        // Verifica se a consulta pode ser cancelada com antecedência mínima de 24 horas
-        if (!validarAntecedenciaCancelamento(agendamento.getDatahora())) {
-            throw new ConsultaCancelamentoException("Não é possível cancelar a consulta com a antecedência mínima");
+        LocalDateTime dataHoraAtual = LocalDateTime.now();
+        LocalDateTime dataHoraAgendamento = agendamento.getDatahora();
+        
+        
+        if (dataHoraAgendamento.isBefore(dataHoraAtual.plus(24, ChronoUnit.HOURS))) {
+        	agendamento.setCancelada(true);
+            throw new ConsultaCancelamentoException("Não é possível cancelar a consulta com a antecedência mínima de 24 horas");
+            
         }
-
-        // Realiza o cancelamento da consulta
-        agendamento.setCancelada(true);
-        agendamento.setMotivoCancelamento(request.getMotivo());
+        
+        agendamento.setCancelada(false);
     }
 
     // Outros métodos e validações...
@@ -102,17 +112,17 @@ public class ConsultaController {
     }
 
     private boolean isPacienteAtivo(Paciente paciente) {
-        // Lógica para verificar se o paciente está ativo no sistema
+        
         return true;
     }
 
     private boolean isMedicoAtivo(Medico medico) {
-        // Lógica para verificar se o médico está ativo no sistema
+        
         return true;
     }
 
     private boolean isConsultaDuplicada(Paciente paciente, LocalDate data) {
-        // Verifica se o paciente já possui uma consulta agendada no mesmo dia
+
         for (Agendamento agendamento : agendamentos) {
             if (!agendamento.isCancelada() && agendamento.getPaciente().equals(paciente) && agendamento.getDatahora().toLocalDate().equals(data)) {
                 return true;
@@ -122,7 +132,7 @@ public class ConsultaController {
     }
 
     private boolean isMedicoOcupado(Medico medico, LocalDateTime dataHora) {
-        // Verifica se o médico já possui uma consulta agendada na mesma data/hora
+
         for (Agendamento agendamento : agendamentos) {
             if (!agendamento.isCancelada() && agendamento.getMedico().equals(medico) && agendamento.getDatahora().equals(dataHora)) {
                 return true;
@@ -131,20 +141,4 @@ public class ConsultaController {
         return false;
     }
 
-    private boolean validarAntecedenciaCancelamento(LocalDateTime dataHoraConsulta) {
-        LocalDateTime antecedenciaMinima = LocalDateTime.now().plusHours(24);
-        return dataHoraConsulta.isAfter(antecedenciaMinima);
-    }
-
-    @ExceptionHandler(ConsultaAgendamentoException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleConsultaAgendamentoException(ConsultaAgendamentoException ex) {
-        return ex.getMessage();
-    }
-
-    @ExceptionHandler(ConsultaCancelamentoException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleConsultaCancelamentoException(ConsultaCancelamentoException ex) {
-        return ex.getMessage();
-    }
 }
