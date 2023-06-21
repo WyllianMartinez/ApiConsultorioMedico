@@ -1,6 +1,7 @@
 package br.com.unipar.apiconsultoriomedico.controllers;
 
 import java.time.DayOfWeek;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/consultas")
 public class AgendamentoController {
 	
+	@Autowired
 	private AgendamentoService agendamentoService;
 
     private List<Agendamento> agendamentos = new ArrayList<>();
@@ -44,7 +47,7 @@ public class AgendamentoController {
 
     @PostMapping("/agendar")
     @ApiOperation(value = "Agendar uma consulta")
-    public void insert(@RequestBody AgendamentoRequest request) {
+    public void insert(@RequestBody AgendamentoRequest request) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(request.getData(), formatter);
         LocalTime horario = request.getHorario();
@@ -74,6 +77,8 @@ public class AgendamentoController {
         agendamento.setPaciente(request.getPaciente());
         agendamento.setDatahora(LocalDateTime.of(data, horario));
         agendamentos.add(agendamento);
+        
+        agendamentoService.insert(agendamento);
     }
 
     @PostMapping("/cancelar")
