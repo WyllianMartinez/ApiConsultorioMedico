@@ -32,9 +32,9 @@ public class ApiConsultorioMedicoApplication {
 
 	public ApiInfo geraInfoSwsagger() {
 
-		return new ApiInfo("Trabalho Spring Boot - Unipar",
-				"Criado no Terceiro Ano de ADS 2023 - Unipar",
-				"1d.0", null, "Felipe leite e Wyllian Martinez", null, null);
+		return new ApiInfo("Trabalho - Spring Boot",
+				"Terceiro Ano de ADS",
+				"", null, "Felipe leite"+" Wyllian Martinez", null, null);
 	}
 
 }
