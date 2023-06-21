@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.unipar.apiconsultoriomedico.model.Medico;
 import br.com.unipar.apiconsultoriomedico.repositories.MedicoRepository;
+import br.com.unipar.apiconsultoriomedico.repositories.PacienteRepository;
 
 @Service
 public class MedicoService {
@@ -36,7 +37,7 @@ public class MedicoService {
 
 	public List<Medico> findByFilters(String nome) {
 
-		return medicoRepository.findByNomeOrderByNomeAsc(nome);
+		return medicoRepository.findByNomeContainingAllIgnoringCase(nome);
 	}
 
 	public Medico findById(Long id) throws Exception{
@@ -60,7 +61,12 @@ public class MedicoService {
 	        throw new RuntimeException("Médico não encontrado");
 	    }
 	}
+	
+	public List<MedicoRepository.MedicoProjection> findAllOrder() {
 
+        return medicoRepository.findAllByOrderByNomeAsc();
+
+    }
 	
 }
 

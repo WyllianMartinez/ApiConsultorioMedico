@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.unipar.apiconsultoriomedico.model.Paciente;
+import br.com.unipar.apiconsultoriomedico.repositories.PacienteRepository;
 import br.com.unipar.apiconsultoriomedico.services.PacienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,13 @@ public class PacienteController {
 	}
 	
 	@PutMapping
+	@ApiOperation(value = "Editar um paciente")
+	public Paciente edit(@RequestBody Paciente paciente) throws Exception {
+
+		return pacienteService.edit(paciente);
+	}
+	
+	@GetMapping
 	@ApiOperation(value = "Obter uma lista de paciente")
 	public List<Paciente> findAll() throws Exception {
 	
@@ -49,10 +57,24 @@ public class PacienteController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@ApiOperation(value = "Deletar um paciente")
 	public Paciente delete(@PathVariable Long id) {
 	    return pacienteService.delete(id);
 	}
 	
-	
+	@GetMapping(path = "/busca")
+    @ApiOperation(value = "Buscar paciente pelo seu nome")
+    public List<Paciente> findByFilters(@RequestParam("nome") String nome){
+
+        return pacienteService.findByFilters(nome);
+    }
+
+    @GetMapping(path = "/ordenacao")
+    @ApiOperation(value = "Lista de pacientes ordenadas pelo nome")
+    public List<PacienteRepository.PacienteProjection> findByFilters(){
+
+        return pacienteService.findAllOrder();
+    }
+
 
 }

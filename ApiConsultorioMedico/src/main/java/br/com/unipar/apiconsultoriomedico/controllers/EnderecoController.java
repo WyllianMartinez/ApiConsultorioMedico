@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unipar.apiconsultoriomedico.model.Endereco;
 import br.com.unipar.apiconsultoriomedico.services.EnderecoService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(path = "/endereco")
@@ -25,6 +26,7 @@ public class EnderecoController {
 	
 	
 	@PostMapping
+	@ApiOperation(value = "Inserir um endereco")
 	public Endereco insert(@RequestBody @Valid Endereco endereco) throws Exception{
 		
 		return enderecoService.insert(endereco);
@@ -32,12 +34,14 @@ public class EnderecoController {
 	}
 	
 	@PutMapping
+	@ApiOperation(value = "Editar um endereco")
 	public Endereco edit(@RequestBody Endereco endereco) throws Exception {
 		
 		return enderecoService.edit(endereco);
 	}
 	
 	@GetMapping
+	@ApiOperation(value = "Listagem de enderecos")
 	public List<Endereco> findAll() throws Exception{
 		
 		return enderecoService.findAll();
@@ -45,6 +49,7 @@ public class EnderecoController {
 	}
 	
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Buscar um endereco pelo ID")
 	public Endereco findById(@PathVariable Long id) throws Exception{
 		
 		return enderecoService.findById(id);

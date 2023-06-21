@@ -45,7 +45,7 @@ public class Medico {
 	
 	@NotNull
 	@Column(updatable = false)
-	private int crm;
+	private String crm;
 	
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
@@ -99,11 +99,11 @@ public class Medico {
 		this.telefone = telefone;
 	}
 
-	public int getCrm() {
+	public String getCrm() {
 		return crm;
 	}
 
-	public void setCrm(int crm) {
+	public void setCrm(String crm) {
 		this.crm = crm;
 	}
 

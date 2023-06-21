@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import br.com.unipar.apiconsultoriomedico.model.Medico;
 import br.com.unipar.apiconsultoriomedico.model.Paciente;
 import br.com.unipar.apiconsultoriomedico.repositories.PacienteRepository;
 
@@ -65,5 +63,12 @@ public class PacienteService {
 	        throw new RuntimeException("Paciente não encontrado");
 	    }
 	}
+	
+	public List<PacienteRepository.PacienteProjection> findAllOrder() {
+
+        return pacienteRepository.findAllByOrderByNomeAsc();
+
+    }
+	
 }
 

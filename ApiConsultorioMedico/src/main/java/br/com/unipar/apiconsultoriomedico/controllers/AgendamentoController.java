@@ -31,6 +31,7 @@ import br.com.unipar.apiconsultoriomedico.model.Paciente;
 import br.com.unipar.apiconsultoriomedico.resquest.AgendamentoRequest;
 import br.com.unipar.apiconsultoriomedico.resquest.CancelamentoRequest;
 import br.com.unipar.apiconsultoriomedico.services.AgendamentoService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/consultas")
@@ -42,6 +43,7 @@ public class AgendamentoController {
     private List<Cancelamento> cancelamento = new ArrayList<>();
 
     @PostMapping("/agendar")
+    @ApiOperation(value = "Agendar uma consulta")
     public void insert(@RequestBody AgendamentoRequest request) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(request.getData(), formatter);
@@ -75,6 +77,7 @@ public class AgendamentoController {
     }
 
     @PostMapping("/cancelar")
+    @ApiOperation(value = "Cancelar uma consulta")
     public void cancelarConsulta(@RequestBody CancelamentoRequest request) {
         Agendamento agendamento = request.getAgendamento();
         LocalDateTime dataHoraAtual = LocalDateTime.now();
@@ -140,11 +143,13 @@ public class AgendamentoController {
 
     
     @GetMapping
+    @ApiOperation(value = "Obter uma lista de consultas")
     public List<Agendamento> findAll() throws Exception {
         return agendamentoService.findAll();
     }
 
     @GetMapping(path = "/{id}")
+    @ApiOperation(value = "Obter uma consulta pelo seu ID")
     public Agendamento findById(@PathVariable Long id) throws Exception {
         return agendamentoService.findById(id);
     }
