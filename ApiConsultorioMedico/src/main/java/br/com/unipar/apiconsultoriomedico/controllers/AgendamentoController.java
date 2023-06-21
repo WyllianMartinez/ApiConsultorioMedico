@@ -143,13 +143,13 @@ public class AgendamentoController {
 
     
     @GetMapping
-    @ApiOperation(value = "Obter uma lista de consultas")
+    @ApiOperation(value = "Listagem de consultas")
     public List<Agendamento> findAll() throws Exception {
         return agendamentoService.findAll();
     }
 
     @GetMapping(path = "/{id}")
-    @ApiOperation(value = "Obter uma consulta pelo seu ID")
+    @ApiOperation(value = "Buscar uma consulta pelo seu ID")
     public Agendamento findById(@PathVariable Long id) throws Exception {
         return agendamentoService.findById(id);
     }
